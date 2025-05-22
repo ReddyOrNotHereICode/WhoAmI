@@ -1,2 +1,0 @@
-# WhoAmI
-WebApp portfolio/CV
