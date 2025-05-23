@@ -36,4 +36,19 @@ export default [
       },
     },
   },
+  // Add vitest globals for test files
+  {
+    files: ['**/*.test.{ts,tsx,js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        vi: 'readonly',
+      },
+    },
+  },
 ]
