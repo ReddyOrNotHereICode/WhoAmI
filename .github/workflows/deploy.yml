@@ -26,4 +26,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          npx gh-pages -d dist -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/reddyornothereicode/whoami.git
+          npx gh-pages -d dist -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/reddyornothereicode/whoami
