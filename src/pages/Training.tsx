@@ -5,14 +5,13 @@ import Link from '@mui/material/Link';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { skillAreas } from '../data/trainingSkillAreas';
 import type { CourseWithProvider, CertWithProvider } from '../data/trainingSkillAreas';
 
 function SkillAreaAccordion({ area, items, summary }: Readonly<{ area: string; items: CertWithProvider[]; summary?: string }>) {
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<span>▼</span>}>
         <Box>
           <Typography variant="h5">{area}</Typography>
           {summary && (
@@ -25,7 +24,7 @@ function SkillAreaAccordion({ area, items, summary }: Readonly<{ area: string; i
       <AccordionDetails>
         {items.map((cert: CertWithProvider) => (
           <Accordion key={cert.name} sx={{ mb: 2 }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<span>▼</span>}>
               <Typography variant="h6">
                 {cert.name} <span style={{ marginLeft: 8, fontSize: '0.75rem', opacity: 0.7 }}>({cert.provider})</span>
               </Typography>
