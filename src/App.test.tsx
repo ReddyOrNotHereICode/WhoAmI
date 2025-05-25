@@ -19,7 +19,7 @@ describe('App Navbar and Routing', () => {
     render(<App />);
     expect(await screen.findByText(/red parker/i)).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByText(/portfolio showcases my projects/i)).toBeInTheDocument();
+    expect(screen.getByText(/src uk/i)).toBeInTheDocument();
   });
 });
 

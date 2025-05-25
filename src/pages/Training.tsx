@@ -70,18 +70,14 @@ function Training() {
   return (
     <PageLayout id="training" title="Training">
       <Typography variant="body1" paragraph>
-        Below are my completed training courses and certifications, grouped by skill area. Provider details are shown next to each certificate and course. Click to expand each section for details and links to certificates and Coursera info.
+        Below are my completed training courses and certifications, grouped by skill area. 
+        Provider details are shown next to each certificate and course. 
+        Click to expand each section for details and links to certificates and Coursera info.
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        {skillAreas?.length > 0 ? (
-          skillAreas.map((area) => (
-            <SkillAreaAccordion key={area.area} area={area.area} items={area.items} summary={area.summary} />
-          ))
-        ) : (
-          <Typography variant="body1" color="text.secondary">
-            No training data available.
-          </Typography>
-        )}
+        {skillAreas?.map((area) => (
+          <SkillAreaAccordion key={area.area} area={area.area} items={area.items} summary={area.summary} />
+        ))}
       </Box>
     </PageLayout>
   );
