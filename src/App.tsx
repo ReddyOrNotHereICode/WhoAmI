@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,7 +14,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-ro
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Training from './pages/Training';
-import './App.css'
+import './App.css';
 
 function App() {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
