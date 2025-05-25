@@ -69,7 +69,7 @@ function SkillAreaAccordion({ area, items, summary }: Readonly<{ area: string; i
 function Training() {
   return (
     <PageLayout id="training" title="Training">
-      <Typography variant="body1" paragraph>
+      <Typography variant="body1">
         Below are my completed training courses and certifications, grouped by skill area. 
         Provider details are shown next to each certificate and course. 
         Click to expand each section for details and links to certificates and Coursera info.

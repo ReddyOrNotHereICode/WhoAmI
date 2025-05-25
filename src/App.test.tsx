@@ -32,7 +32,7 @@ describe('Projects page', () => {
       </MemoryRouter>
     );
     expect(screen.getByRole('heading', { name: /projects/i })).toBeInTheDocument();
-    expect(screen.getByText(/explore my featured projects/i)).toBeInTheDocument();
+    expect(screen.getByText(/tech stack/i)).toBeInTheDocument();
   });
 });
 
