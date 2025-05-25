@@ -5,6 +5,7 @@ import App from './App';
 import Projects from './pages/Projects';
 import Training from './pages/Training';
 import userEvent from '@testing-library/user-event';
+import { getTheme } from './theme'; // Import getTheme function
 
 describe('App Navbar and Routing', () => {
   it('renders the navbar with correct sections', () => {
@@ -128,5 +129,97 @@ describe('Training page', () => {
       }
     }
     expect(foundPdfWithoutCoursera).toBe(true);
+  });
+});
+
+describe('Theme toggling', () => {
+   it('toggles between light and dark mode when the icon is clicked', async () => {
+     render(<App />);
+    const toggleBtn = screen.getByLabelText(/toggle dark mode/i);
+    expect(toggleBtn).toBeInTheDocument();
+    
+    // Verify initial state shows moon icon (light mode)
+    expect(toggleBtn.querySelector('[data-testid="FaMoon"]')).toBeInTheDocument();
+    
+    // Click the toggle button
+    await userEvent.click(toggleBtn);
+    
+    // After toggle, sun icon should be visible (dark mode)
+    expect(screen.getByLabelText(/toggle dark mode/i).querySelector('[data-testid="FaSun"]')).toBeInTheDocument();
+   });
+ });
+
+describe('Theme toggle icon', () => {
+  it('shows FaMoon in light mode and FaSun in dark mode', async () => {
+    render(<App />);
+    // Should show FaMoon (moon icon) in light mode
+    expect(screen.getByTestId('FaMoon')).toBeInTheDocument();
+    // Toggle to dark mode
+    await userEvent.click(screen.getByLabelText(/toggle dark mode/i));
+    // Should show FaSun (sun icon) in dark mode
+    expect(screen.getByTestId('FaSun')).toBeInTheDocument();
+  });
+});
+
+describe('Theme toggle branch coverage', () => {
+  it('toggles from light to dark and back to light, covering both branches', async () => {
+    render(<App />);
+    // Should start in light mode (FaMoon icon)
+    const toggleBtn = screen.getByLabelText(/toggle dark mode/i);
+    expect(toggleBtn.querySelector('svg')).toBeInTheDocument();
+    // Toggle to dark mode
+    await userEvent.click(toggleBtn);
+    // Should now show FaSun (dark mode)
+    expect(screen.getByLabelText(/toggle dark mode/i).querySelector('svg')).toBeInTheDocument();
+    // Toggle back to light mode
+    await userEvent.click(screen.getByLabelText(/toggle dark mode/i));
+    // Should show FaMoon again (light mode)
+    expect(screen.getByLabelText(/toggle dark mode/i).querySelector('svg')).toBeInTheDocument();
+  });
+});
+
+describe('Contact popover', () => {
+  it('shows email and phone when the contact icon is clicked', async () => {
+    render(<App />);
+    // Find the contact button (envelope icon)
+    const contactBtn = screen.getByLabelText(/contact/i);
+    await userEvent.click(contactBtn);
+    expect(screen.getByText(/red.parker.red@gmail.com/i)).toBeInTheDocument();
+    expect(screen.getByText(/\+44/i)).toBeInTheDocument();
+  });
+});
+
+describe('Contact popover accessibility', () => {
+  it('popover has correct id when open and is not in the DOM when closed', async () => {
+    render(<App />);
+    // Popover should not be in the document initially
+    expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
+
+    // Open the popover
+    const contactBtn = screen.getByLabelText(/contact/i);
+    await userEvent.click(contactBtn);
+    const popover = screen.getByRole('presentation');
+    expect(popover).toHaveAttribute('id', 'contact-popover');
+
+    // Close the popover
+    // Click away: simulate pressing Escape (which closes MUI popovers)
+    await userEvent.keyboard('{Escape}');
+    // Wait for popover to be removed
+    expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
+  });
+});
+
+describe('getTheme', () => {
+  it('returns correct palette for light mode', () => {
+    const theme = getTheme('light');
+    expect(theme.palette.mode).toBe('light');
+    expect(theme.palette.background.default).toBe('#fff8f0');
+    expect(theme.palette.text.primary).toBe('#4e260e');
+  });
+  it('returns correct palette for dark mode', () => {
+    const theme = getTheme('dark');
+    expect(theme.palette.mode).toBe('dark');
+    expect(theme.palette.background.default).toBe('#1a1a1a');
+    expect(theme.palette.text.primary).toBe('#fff8f0');
   });
 });

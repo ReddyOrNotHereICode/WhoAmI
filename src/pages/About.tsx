@@ -33,10 +33,6 @@ function About() {
         <br />A Levels: Computer Science, Maths, Physics
         <br />AS Levels: Further Maths, Chemistry
       </Typography>
-      <Typography variant="body2" color="text.secondary">
-        Contact:{' '}
-        <a href="mailto:red.parker.red@gmail.com">red.parker.red@gmail.com</a>
-      </Typography>
     </PageLayout>
   );
 }

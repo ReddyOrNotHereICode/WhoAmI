@@ -1,8 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 
-const autumnTheme = createTheme({
+export const getTheme = (mode: 'light' | 'dark') => createTheme({
   palette: {
-    mode: 'light',
+    mode,
     primary: {
       main: '#b34700', // deep orange
       contrastText: '#fff',
@@ -11,8 +11,8 @@ const autumnTheme = createTheme({
       main: '#e25822', // pumpkin
     },
     background: {
-      default: '#fff8f0', // warm off-white
-      paper: '#fff3e0', // light orange
+      default: mode === 'light' ? '#fff8f0' : '#1a1a1a',
+      paper: mode === 'light' ? '#fff3e0' : '#222',
     },
     error: {
       main: '#b22222', // firebrick
@@ -27,16 +27,16 @@ const autumnTheme = createTheme({
       main: '#a0522d', // sienna
     },
     text: {
-      primary: '#4e260e', // dark brown
-      secondary: '#b34700',
+      primary: mode === 'light' ? '#4e260e' : '#fff8f0',
+      secondary: mode === 'light' ? '#b34700' : '#ffb347',
     },
   },
   typography: {
     fontFamily: 'Segoe UI, Arial, sans-serif',
-    h1: { color: '#b34700' },
-    h2: { color: '#e25822' },
+    h1: { color: mode === 'light' ? '#b34700' : '#ffb347' },
+    h2: { color: mode === 'light' ? '#e25822' : '#ff9800' },
     h3: { color: '#ff9800' },
   },
 });
 
-export default autumnTheme;
+export default getTheme;
