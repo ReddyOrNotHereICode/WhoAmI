@@ -11,7 +11,7 @@ function PageLayout({ id, title, children }: PageLayoutProps) {
     return (
         <Box sx={{ mt: 0, minHeight: '80vh' }}>
             <section id={id}>
-                <h1>{title}</h1>
+                <h1 style={{ marginTop: 0, paddingTop: 24 }}>{title}</h1>
                 <div>{children}</div>
             </section>
         </Box>

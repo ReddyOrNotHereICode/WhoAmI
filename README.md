@@ -13,7 +13,6 @@ A personal portfolio web app built with **React**, **Vite**, **TypeScript**, and
 - ⚡ Fast and modern build setup with [Vite](https://vitejs.dev/)
 - ⚛️ Built with [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)
 - 🎨 Styled using [Material UI](https://mui.com/)
-- 🔍 Routing handled with `react-router-dom`
 - ✅ Unit tests with [Vitest](https://vitest.dev/) and [React Testing Library](https://testing-library.com/)
 - 🚀 Auto-deploy to GitHub Pages using GitHub Actions
 

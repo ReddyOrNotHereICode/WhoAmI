@@ -71,7 +71,10 @@ function App() {
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           >
             <div style={{ padding: '1rem', minWidth: 220 }}>
-              <strong>Email:</strong> <a href="mailto:red.parker.red@gmail.com">red.parker.red@gmail.com</a><br />
+              <strong>Email:</strong> <a
+                href="mailto:red.parker.red@gmail.com"
+                style={{ color: theme.palette.info.main, fontWeight: 600, textDecoration: 'underline' }}
+              >red.parker.red@gmail.com</a><br />
               <strong>Phone:</strong> <span style={{ whiteSpace: 'nowrap' }}>+44 7792 996199</span>
             </div>
           </Popover>

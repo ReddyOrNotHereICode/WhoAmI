@@ -8,8 +8,8 @@ function Projects() {
     <PageLayout id="projects" title="Projects">
       <Typography variant="body1">
         <br />
-        This site is currently my primary public project. 
-        As a developer who mostly works on internal/proprietary software, 
+        This site is currently my primary public project.
+        As a developer who mostly works on internal/proprietary software,
         I created this portfolio to share a public-facing example of my development, design, and CI/CD skills.
       </Typography>
       <Typography variant="body1" sx={{ mt: 1 }}>

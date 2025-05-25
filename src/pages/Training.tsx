@@ -7,11 +7,12 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { skillAreas } from '../data/trainingSkillAreas';
 import type { CourseWithProvider, CertWithProvider } from '../data/trainingSkillAreas';
+import { FaChevronDown } from 'react-icons/fa';
 
 function SkillAreaAccordion({ area, items, summary }: Readonly<{ area: string; items: CertWithProvider[]; summary?: string }>) {
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<span>▼</span>}>
+      <AccordionSummary expandIcon={<FaChevronDown aria-label="expand" />}>
         <Box>
           <Typography variant="h5">{area}</Typography>
           {summary && (
@@ -24,7 +25,7 @@ function SkillAreaAccordion({ area, items, summary }: Readonly<{ area: string; i
       <AccordionDetails>
         {items.map((cert: CertWithProvider) => (
           <Accordion key={cert.name} sx={{ mb: 2 }}>
-            <AccordionSummary expandIcon={<span>▼</span>}>
+            <AccordionSummary expandIcon={<FaChevronDown aria-label="expand" />}>
               <Typography variant="h6">
                 {cert.name} <span style={{ marginLeft: 8, fontSize: '0.75rem', opacity: 0.7 }}>({cert.provider})</span>
               </Typography>
@@ -70,11 +71,11 @@ function Training() {
   return (
     <PageLayout id="training" title="Training">
       <Typography variant="body1">
-        Below are my completed training courses and certifications, grouped by skill area. 
-        Provider details are shown next to each certificate and course. 
+        Below are my completed training courses and certifications, grouped by skill area.
+        Provider details are shown next to each certificate and course.
         Click to expand each section for details and links to certificates and Coursera info.
       </Typography>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
         {skillAreas?.map((area) => (
           <SkillAreaAccordion key={area.area} area={area.area} items={area.items} summary={area.summary} />
         ))}
