@@ -1,35 +1,56 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import Projects from './pages/Projects';
 import Training from './pages/Training';
 import userEvent from '@testing-library/user-event';
-import { getTheme } from './theme'; // Import getTheme function
+import { getTheme } from './theme'; 
 
-describe('App Navbar and Routing', () => {
+describe('App Navbar and Navigation', () => {
   it('renders the navbar with correct sections', () => {
     render(<App />);
-
-    expect(screen.getByRole('link', { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /projects/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /training/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /about/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /projects/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /training/i })).toBeInTheDocument();
   });
 
-  it('renders About content when redirected from /', async () => {
+  it('renders About content by default', () => {
     render(<App />);
-    expect(await screen.findByText(/red parker/i)).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByText(/src uk/i)).toBeInTheDocument();
+    expect(screen.getByText(/red parker/i)).toBeInTheDocument();
+  });
+
+  it('navigates to Projects and Training via button clicks', async () => {
+    render(<App />);
+    // Go to Projects
+    await userEvent.click(screen.getByRole('button', { name: /projects/i }));
+    expect(screen.getByRole('heading', { name: /projects/i })).toBeInTheDocument();
+    expect(screen.getByText(/tech stack/i)).toBeInTheDocument();
+    // Go to Training
+    await userEvent.click(screen.getByRole('button', { name: /training/i }));
+    expect(screen.getByRole('heading', { name: /training/i })).toBeInTheDocument();
+    expect(screen.getByText(/completed training/i)).toBeInTheDocument();
+    // Go back to About
+    await userEvent.click(screen.getByRole('button', { name: /about/i }));
+    expect(screen.getByRole('heading', { name: /about/i })).toBeInTheDocument();
+  });
+
+  it('does not change URL when navigating via navbar', async () => {
+    render(<App />);
+    const initialUrl = window.location.pathname;
+    await userEvent.click(screen.getByRole('button', { name: /projects/i }));
+    expect(window.location.pathname).toBe(initialUrl);
+    await userEvent.click(screen.getByRole('button', { name: /training/i }));
+    expect(window.location.pathname).toBe(initialUrl);
+    await userEvent.click(screen.getByRole('button', { name: /about/i }));
+    expect(window.location.pathname).toBe(initialUrl);
   });
 });
 
 describe('Projects page', () => {
   it('renders Projects page content', () => {
     render(
-      <MemoryRouter>
-        <Projects />
-      </MemoryRouter>
+      <Projects />
     );
     expect(screen.getByRole('heading', { name: /projects/i })).toBeInTheDocument();
     expect(screen.getByText(/tech stack/i)).toBeInTheDocument();
@@ -39,9 +60,7 @@ describe('Projects page', () => {
 describe('Training page', () => {
   it('renders skill area accordions and provider details', async () => {
     render(
-      <MemoryRouter>
-        <Training />
-      </MemoryRouter>
+      <Training />
     );
     // Check for skill area headings
     expect(screen.getByText(/Software Engineering & Development/i)).toBeInTheDocument();
@@ -66,9 +85,7 @@ describe('Training page', () => {
 
   it('renders all course certificate PDF links and Coursera links (full coverage for cert.courses.map)', async () => {
     render(
-      <MemoryRouter>
-        <Training />
-      </MemoryRouter>
+      <Training />
     );
     // Expand all skill area accordions dynamically
     const skillAreaButtons = screen.getAllByRole('button', { expanded: false });
@@ -101,9 +118,7 @@ describe('Training page', () => {
 
   it('renders a course with only a PDF and no Coursera link (edge case for cert.courses.map)', async () => {
     render(
-      <MemoryRouter>
-        <Training />
-      </MemoryRouter>
+      <Training />
     );
     // Expand all skill area accordions
     const skillAreaButtons = screen.getAllByRole('button', { name: /Software Engineering & Development|Leadership & Management/i });
@@ -187,25 +202,46 @@ describe('Contact popover', () => {
     expect(screen.getByText(/red.parker.red@gmail.com/i)).toBeInTheDocument();
     expect(screen.getByText(/\+44/i)).toBeInTheDocument();
   });
-});
 
-describe('Contact popover accessibility', () => {
-  it('popover has correct id when open and is not in the DOM when closed', async () => {
+  it('closes when clicking away', async () => {
     render(<App />);
-    // Popover should not be in the document initially
-    expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
-
-    // Open the popover
     const contactBtn = screen.getByLabelText(/contact/i);
     await userEvent.click(contactBtn);
-    const popover = screen.getByRole('presentation');
-    expect(popover).toHaveAttribute('id', 'contact-popover');
-
-    // Close the popover
-    // Click away: simulate pressing Escape (which closes MUI popovers)
+    expect(screen.getByText(/red.parker.red@gmail.com/i)).toBeInTheDocument();
+    // Simulate clicking away (click on the overlay)
     await userEvent.keyboard('{Escape}');
-    // Wait for popover to be removed
-    expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
+    expect(screen.queryByText(/red.parker.red@gmail.com/i)).not.toBeInTheDocument();
+  });
+});
+
+describe('Theme toggling', () => {
+  it('does not change the URL when toggling theme', async () => {
+    render(<App />);
+    const initialUrl = window.location.pathname;
+    const toggleBtn = screen.getByLabelText(/toggle dark mode/i);
+    await userEvent.click(toggleBtn);
+    expect(window.location.pathname).toBe(initialUrl);
+    await userEvent.click(toggleBtn);
+    expect(window.location.pathname).toBe(initialUrl);
+  });
+});
+
+describe('App initial deep linking', () => {
+  it('shows Projects if URL contains projects', () => {
+    window.history.replaceState(null, '', '/WhoAmI/projects');
+    render(<App />);
+    expect(screen.getByRole('heading', { name: /projects/i })).toBeInTheDocument();
+  });
+  it('shows Training if URL contains training', () => {
+    window.history.replaceState(null, '', '/WhoAmI/training');
+    render(<App />);
+    expect(screen.getByRole('heading', { name: /training/i })).toBeInTheDocument();
+  });
+  it('redirects from / to /WhoAmI and shows About', () => {
+    window.history.replaceState(null, '', '/');
+    render(<App />);
+    expect(window.location.pathname).toBe('/WhoAmI');
+    expect(screen.getByRole('heading', { name: /about/i })).toBeInTheDocument();
   });
 });
 
