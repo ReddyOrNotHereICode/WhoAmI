@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Projects from './Projects';
 
 describe('Projects page', () => {
@@ -7,5 +8,23 @@ describe('Projects page', () => {
     render(<Projects />);
     expect(screen.getByRole('heading', { name: /projects/i })).toBeInTheDocument();
     expect(screen.getByText(/tech stack/i)).toBeInTheDocument();
+  });
+
+  it('shows Portfolio Project tab by default', () => {
+    render(<Projects />);
+    expect(screen.getByRole('tab', { name: /portfolio project/i })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('heading', { name: /portfolio web app/i })).toBeInTheDocument();
+    expect(screen.getByText(/tech stack/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /github repo/i })).toHaveAttribute('href', expect.stringContaining('WhoAmI'));
+  });
+
+  it('switches to Django Web App tab and shows correct content', async () => {
+    render(<Projects />);
+    const djangoTab = screen.getByRole('tab', { name: /django web app/i });
+    await userEvent.click(djangoTab);
+    expect(djangoTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('heading', { name: /django web app/i })).toBeInTheDocument();
+    expect(screen.getByText(/placeholder/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /django web app github repo/i })).toHaveAttribute('href', expect.stringContaining('Django'));
   });
 });
