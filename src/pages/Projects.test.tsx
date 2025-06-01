@@ -14,7 +14,7 @@ describe('Projects page', () => {
     render(<Projects />);
     expect(screen.getByRole('tab', { name: /portfolio project/i })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('heading', { name: /portfolio web app/i })).toBeInTheDocument();
-    expect(screen.getByText(/tech stack/i)).toBeInTheDocument();
+    expect(screen.getByText(/i created this portfolio/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /github repo/i })).toHaveAttribute('href', expect.stringContaining('WhoAmI'));
   });
 
@@ -24,7 +24,7 @@ describe('Projects page', () => {
     await userEvent.click(djangoTab);
     expect(djangoTab).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('heading', { name: /django web app/i })).toBeInTheDocument();
-    expect(screen.getByText(/placeholder/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /django web app github repo/i })).toHaveAttribute('href', expect.stringContaining('Django'));
+    expect(screen.getByText(/dockerizing python web apps/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /github repo/i })).toHaveAttribute('href', expect.stringContaining('Django'));
   });
 });
