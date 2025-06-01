@@ -2,35 +2,28 @@ import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import getTheme from './theme';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
+import {AppBar, Toolbar, Button, Box, IconButton, Popover} from '@mui/material';
 import { FaSun, FaMoon, FaEnvelope } from 'react-icons/fa';
-import Popover from '@mui/material/Popover';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Training from './pages/Training';
+import Home from './pages/Home';
 import './App.css';
 
 function App() {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
   const [contactAnchor, setContactAnchor] = useState<null | HTMLElement>(null);
-  const [page, setPage] = useState<'about' | 'projects' | 'training'>(() => {
-    // Parse the path for deep linking
+  const [page, setPage] = useState<'home' | 'about' | 'projects' | 'training'>(() => {
     const path = window.location.pathname.toLowerCase();
-    if (path.includes('projects')) {
-      return 'projects';
-    }
-    if (path.includes('training')) {
-      return 'training';
-    }
-    // Redirect from / or /WhoAmI to /WhoAmI/about on initial load
+    if (path.includes('projects')) return 'projects';
+    if (path.includes('training')) return 'training';
+    if (path.includes('about')) return 'about';
+    // Redirect from / to /WhoAmI on initial load
     if (path === '/') {
-      window.history.replaceState(null, '', '/WhoAmI');
+      window.history.replaceState(null, '', '/WhoAmI/');
+      return 'home';
     }
-    return 'about';
+    return 'home';
   });
   const theme = getTheme(mode);
 
@@ -49,6 +42,7 @@ function App() {
       <AppBar position="fixed" color="primary" sx={{ width: '100vw', left: 0, top: 0, boxShadow: 3 }}>
         <Toolbar>
           <Box sx={{ flexGrow: 1, display: 'flex', gap: 2 }}>
+            <Button color="inherit" sx={{ fontWeight: 600, letterSpacing: 1 }} onClick={() => setPage('home')}>Home</Button>
             <Button color="inherit" sx={{ fontWeight: 600, letterSpacing: 1 }} onClick={() => setPage('about')}>About</Button>
             <Button color="inherit" sx={{ fontWeight: 600, letterSpacing: 1 }} onClick={() => setPage('projects')}>Projects</Button>
             <Button color="inherit" sx={{ fontWeight: 600, letterSpacing: 1 }} onClick={() => setPage('training')}>Training</Button>
@@ -90,6 +84,7 @@ function App() {
         </Toolbar>
       </AppBar>
       <Box sx={{ pt: 10 }}>
+        {page === 'home' && <Home onExplore={() => setPage('projects')} onAbout={() => setPage('about')} />}
         {page === 'about' && <About />}
         {page === 'projects' && <Projects />}
         {page === 'training' && <Training />}

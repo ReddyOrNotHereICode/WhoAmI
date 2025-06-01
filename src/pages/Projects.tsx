@@ -1,13 +1,10 @@
 import PageLayout from '../components/PageLayout';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import { Box, Typography, Link, Tabs, Tab } from '@mui/material';
 import { useState } from 'react';
 
 function Projects() {
   const [tab, setTab] = useState(0);
+
   return (
     <PageLayout id="projects" title="Projects">
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
@@ -15,7 +12,7 @@ function Projects() {
           value={tab}
           onChange={(_, v) => setTab(v)}
           aria-label="Project sections"
-          variant="scrollable"
+          centered
         >
           <Tab label="Portfolio Project" />
           <Tab label="Django Web App" />
@@ -54,6 +51,7 @@ function Projects() {
               href="https://github.com/reddyornothereicode/WhoAmI"
               target="_blank"
               rel="noopener"
+              aria-label="GitHub Repo for the Portfolio project"
             >
               GitHub Repo
             </Link>
@@ -91,6 +89,7 @@ function Projects() {
               href="https://github.com/ReddyOrNotHereICode/Django"
               target="_blank"
               rel="noopener"
+              aria-label="GitHub Repo for the Django project"
             >
               GitHub Repo
             </Link>

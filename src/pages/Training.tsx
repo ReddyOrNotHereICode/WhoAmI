@@ -1,32 +1,23 @@
 import PageLayout from '../components/PageLayout';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+import { Link, Box, Typography, Tabs, Tab, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { skillAreas } from '../data/trainingSkillAreas';
 import type { CourseWithProvider, CertWithProvider } from '../data/trainingSkillAreas';
 import { FaChevronDown } from 'react-icons/fa';
+import { useState } from 'react';
 
-function SkillAreaAccordion({ area, items, summary }: Readonly<{ area: string; items: CertWithProvider[]; summary?: string }>) {
+function SkillAreaAccordion({ area, items }: Readonly<{ area: string; items: CertWithProvider[] }>) {
   return (
     <Accordion>
       <AccordionSummary expandIcon={<FaChevronDown aria-label="expand" />}>
         <Box>
-          <Typography variant="h5">{area}</Typography>
-          {summary && (
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              {summary}
-            </Typography>
-          )}
+          <Typography variant="body1">{area}</Typography>
         </Box>
       </AccordionSummary>
       <AccordionDetails>
         {items.map((cert: CertWithProvider) => (
           <Accordion key={cert.name} sx={{ mb: 2 }}>
             <AccordionSummary expandIcon={<FaChevronDown aria-label="expand" />}>
-              <Typography variant="h6">
+              <Typography variant="body2">
                 {cert.name} <span style={{ marginLeft: 8, fontSize: '0.75rem', opacity: 0.7 }}>({cert.provider})</span>
               </Typography>
             </AccordionSummary>
@@ -68,16 +59,26 @@ function SkillAreaAccordion({ area, items, summary }: Readonly<{ area: string; i
 }
 
 function Training() {
+  const [tab, setTab] = useState(0);
+  const tabAreas = skillAreas.slice(0, 2);
   return (
     <PageLayout id="training" title="Training">
-      <Typography variant="body1">
-        Below are my completed training courses and certifications, grouped by skill area.
-        Provider details are shown next to each certificate and course.
-        Click to expand each section for details and links to certificates and Coursera info.
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        Below are my completed training courses and certifications, grouped by skill area. Provider details are shown next to each certificate and course. Click to expand each section for details and links to certificates and Coursera info.
       </Typography>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-        {skillAreas?.map((area) => (
-          <SkillAreaAccordion key={area.area} area={area.area} items={area.items} summary={area.summary} />
+      <Tabs
+        value={tab}
+        onChange={(_, v) => setTab(v)}
+        aria-label="Training sections"
+        centered
+      >
+        {tabAreas.map((area) => (
+          <Tab key={area.area} label={area.area} />
+        ))}
+      </Tabs>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, maxHeight: '50vh', overflowY: 'auto' }}>
+        {tabAreas[tab]?.items.map((cert: CertWithProvider) => (
+          <SkillAreaAccordion key={cert.name} area={cert.name} items={[cert]} />
         ))}
       </Box>
     </PageLayout>

@@ -10,7 +10,10 @@ const setPathname = (path: string) => {
 describe('App Navbar and Navigation', () => {
   it('renders the navbar with correct sections', () => {
     render(<App />);
-    expect(screen.getByRole('button', { name: /about/i })).toBeInTheDocument();
+    // There are two About buttons: one in the navbar, one in the Home hero section. Use getAllByRole and check at least one is in the navbar.
+    const aboutButtons = screen.getAllByRole('button', { name: /about/i });
+    // The navbar About button should be visible
+    expect(aboutButtons.some(btn => btn.textContent === 'About')).toBe(true);
     expect(screen.getByRole('button', { name: /projects/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /training/i })).toBeInTheDocument();
   });
@@ -19,7 +22,7 @@ describe('App Navbar and Navigation', () => {
     setPathname('/');
     render(<App />);
     expect(screen.getByRole('heading', { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByText(/red parker/i)).toBeInTheDocument();
+    expect(screen.getByText(/linkedin profile/i)).toBeInTheDocument();
   });
 
   it('renders Projects content when path includes "projects"', () => {
@@ -34,6 +37,12 @@ describe('App Navbar and Navigation', () => {
     expect(screen.getByRole('heading', { name: /training/i })).toBeInTheDocument();
   });
 
+  it('renders About content when path includes "about"', () => {
+    setPathname('/WhoAmI/about');
+    render(<App />);
+    expect(screen.getAllByRole('heading', { name: /about/i })[0]).toBeInTheDocument();
+  });
+
   it('navigates to Projects and Training via button clicks', async () => {
     render(<App />);
     // Go to Projects
@@ -46,7 +55,7 @@ describe('App Navbar and Navigation', () => {
     expect(screen.getByText(/completed training/i)).toBeInTheDocument();
     // Go back to About
     await userEvent.click(screen.getByRole('button', { name: /about/i }));
-    expect(screen.getByRole('heading', { name: /about/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('heading', { name: /about/i })[0]).toBeInTheDocument();
   });
 
   it('does not change URL when navigating via navbar', async () => {
@@ -78,9 +87,24 @@ describe('App Navbar and Navigation', () => {
     expect(screen.getByTestId('FaMoon')).toBeInTheDocument();
   });
 
-  it('renders About after redirect from /WhoAmI', () => {
+  it('renders Home after redirect from /WhoAmI', () => {
     setPathname('/WhoAmI');
     render(<App />);
-    expect(screen.getByRole('heading', { name: /about/i })).toBeInTheDocument();
+    expect(screen.getByText(/linkedin profile/i)).toBeInTheDocument();
+  });
+
+  it('renders Home and navigates to Projects and About via Home page buttons', async () => {
+    setPathname('/WhoAmI/');
+    render(<App />);
+    // Home page should be visible
+    expect(screen.getByRole('heading', { name: /hi, i'm red parker/i })).toBeInTheDocument();
+    // Click "Explore my work" (should go to Projects)
+    await userEvent.click(screen.getByRole('button', { name: /explore my work/i }));
+    expect(screen.getByRole('heading', { name: /projects/i })).toBeInTheDocument();
+    // Go back to Home
+    await userEvent.click(screen.getByRole('button', { name: /home/i }));
+    // Click "Learn more about me" (should go to About)
+    await userEvent.click(screen.getByRole('button', { name: /learn more about me/i }));
+    expect(screen.getAllByRole('heading', { name: /about/i })[1]).toBeInTheDocument();
   });
 });

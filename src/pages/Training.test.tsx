@@ -8,28 +8,37 @@ describe('Training page', () => {
     render(<Training />);
     expect(screen.getByText(/Software Engineering & Development/i)).toBeInTheDocument();
     expect(screen.getByText(/Leadership & Management/i)).toBeInTheDocument();
-    const skillAreaButton = screen.getByRole('button', { name: /Software Engineering & Development/i });
+    const skillAreaButton = screen.getByRole('tab', { name: /Software Engineering & Development/i });
     await userEvent.click(skillAreaButton);
-    const certButton = await screen.findByRole('button', { name: /Applied Software Engineering Fundamentals Specialization/i });
-    await userEvent.click(certButton);
-    expect(screen.getByText(/Applied Software Engineering Fundamentals Specialization/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/IBM/i)[0]).toBeInTheDocument();
-    expect(screen.getAllByText(/Introduction to Software Engineering/i)[0]).toBeInTheDocument();
-    expect(screen.getAllByText(/IBM/i)[1]).toBeInTheDocument();
+    // Expand all visible accordions
+    const allExpandButtons = screen.getAllByRole('button', { expanded: false });
+    for (const btn of allExpandButtons) {
+      await userEvent.click(btn);
+    }
+    //Expand the nested accordions
+    const nestedExpandButtons = screen.getAllByRole('button', { expanded: false });
+    for (const btn of nestedExpandButtons) {
+      await userEvent.click(btn);
+    }
+    // Check that at least one matching text exists
+    expect(screen.getAllByText(/Applied Software Engineering Fundamentals Specialization/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/IBM/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Introduction to Software Engineering/i).length).toBeGreaterThan(0);
     expect(screen.getAllByRole('link', { name: /Certificate \(PDF\)/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole('link', { name: /Coursera Info/i }).length).toBeGreaterThan(0);
   });
 
   it('renders all course certificate PDF links and Coursera links (full coverage for cert.courses.map)', async () => {
     render(<Training />);
-    const skillAreaButtons = screen.getAllByRole('button', { expanded: false });
-    for (const btn of skillAreaButtons) {
+    // Expand all visible accordions
+    const allExpandButtons = screen.getAllByRole('button', { expanded: false });
+    for (const btn of allExpandButtons) {
       await userEvent.click(btn);
     }
-    const certButtons = screen.getAllByRole('button', { expanded: false });
-    for (const btn of certButtons) {
+    //Expand the nested accordions
+    const nestedExpandButtons = screen.getAllByRole('button', { expanded: false });
+    for (const btn of nestedExpandButtons) {
       await userEvent.click(btn);
-      break;
     }
     const pdfLinks = screen.getAllByRole('link', { name: /Certificate \(PDF\)/i });
     expect(pdfLinks.length).toBeGreaterThan(0);
@@ -49,7 +58,7 @@ describe('Training page', () => {
 
   it('renders a course with only a PDF and no Coursera link (edge case for cert.courses.map)', async () => {
     render(<Training />);
-    const skillAreaButtons = screen.getAllByRole('button', { name: /Software Engineering & Development|Leadership & Management/i });
+    const skillAreaButtons = screen.getAllByRole('tab', { name: /Software Engineering & Development|Leadership & Management/i });
     for (const btn of skillAreaButtons) {
       await userEvent.click(btn);
     }
@@ -69,5 +78,20 @@ describe('Training page', () => {
       }
     }
     expect(foundPdfWithoutCoursera).toBe(true);
+  });
+});
+
+describe('Training page tabs', () => {
+  it('renders both tabs and switches content', async () => {
+    render(<Training />);
+    // Both tabs should be present
+    expect(screen.getByRole('tab', { name: /software/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /leadership/i })).toBeInTheDocument();
+    // Default tab content should be visible
+    expect(screen.getByText(/completed training/i)).toBeInTheDocument();
+    // Switch to the second tab
+    await userEvent.click(screen.getByRole('tab', { name: /leadership/i }));
+    // Should show content for the second tab (at least one accordion)
+    expect(screen.getAllByRole('button', { expanded: false }).length).toBeGreaterThan(0);
   });
 });
