@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import getTheme from './theme';
-import {AppBar, Toolbar, Button, Box, IconButton, Popover} from '@mui/material';
+import {AppBar, Toolbar, Button, Box, IconButton, Popover, Typography} from '@mui/material';
 import { FaSun, FaMoon, FaEnvelope } from 'react-icons/fa';
 import About from './pages/About';
 import Projects from './pages/Projects';
@@ -65,6 +65,9 @@ function App() {
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           >
             <div style={{ padding: '1rem', minWidth: 220 }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Contact Me
+              </Typography>
               <strong>Email:</strong> <a
                 href="mailto:red.parker.red@gmail.com"
                 style={{ color: theme.palette.info.main, fontWeight: 600, textDecoration: 'underline' }}

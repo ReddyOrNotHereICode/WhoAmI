@@ -9,7 +9,7 @@ interface PageLayoutProps {
 
 function PageLayout({ id, title, children }: PageLayoutProps) {
     return (
-        <Box sx={{ mt: 0, minHeight: '80vh' }}>
+        <Box sx={{ mt: 0, minHeight: '80vh', maxWidth: '1000px'}}>
             <section id={id}>
                 <h1 style={{ marginTop: 0, paddingTop: 24 }}>{title}</h1>
                 <div>{children}</div>
