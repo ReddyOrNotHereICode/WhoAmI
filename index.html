@@ -2,9 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Red Parker</title>
+
+    <link id="favicon" rel="icon" type="image/svg+xml" href="light_logo.svg" />
+    <!-- Favicon loader script -->
+    <script>
+      const favicon = document.getElementById('favicon');
+      if (favicon) {
+        const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        favicon.href = isDark ? 'dark_logo.svg' : 'light_logo.svg';
+        // Listen for theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          favicon.href = e.matches ? 'dark_logo.svg' : 'light_logo.svg';
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
