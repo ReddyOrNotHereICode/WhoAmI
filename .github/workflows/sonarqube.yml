@@ -20,6 +20,12 @@ jobs:
         run: npm ci
       - name: Run tests with coverage
         run: npm run test:coverage
+      - name: Check for coverage report
+        run: |
+          if [ ! -f coverage/lcov.info ]; then
+            echo "Coverage report not found!"
+            exit 1
+          fi
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
