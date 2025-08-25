@@ -22,10 +22,10 @@ jobs:
         run: npm run test:coverage
       - name: Check for coverage report
         run: |
-          if [ ! -f coverage/lcov.info ]; then
-            echo "Coverage report not found!"
+          if (!(Test-Path 'coverage/lcov.info')) {
+            Write-Host "Coverage report not found!"
             exit 1
-          fi
+          }
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:

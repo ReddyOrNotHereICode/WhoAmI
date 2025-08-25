@@ -21,7 +21,8 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "pre-commit": "powershell -ExecutionPolicy Bypass -File ./pre-commit.ps1"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
