@@ -20,11 +20,14 @@ jobs:
         run: npm ci
       - name: Run tests with coverage
         run: npm run test:coverage
-      - name: Check for coverage report
+      - name: Find coverage report
         run: |
-          if (!(Test-Path 'coverage/lcov.info')) {
+          $lcov = Get-ChildItem -Path . -Recurse -Filter lcov.info | Select-Object -First 1
+          if ($null -eq $lcov) {
             Write-Host "Coverage report not found!"
             exit 1
+          } else {
+            Write-Host "Found coverage report at $($lcov.FullName)"
           }
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5

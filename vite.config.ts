@@ -11,5 +11,9 @@ export default defineConfig({
     globals: true,
     setupFiles: "./src/setupTests.ts",
     exclude: [...configDefaults.exclude],
+    coverage: {
+      reporter: ["text", "lcov", "json"],
+      reportsDirectory: "coverage",
+    },
   },
 });
