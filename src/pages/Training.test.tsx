@@ -62,20 +62,20 @@ describe("Training page", () => {
       name: /Certificate \(PDF\)/i,
     });
     expect(pdfLinks.length).toBeGreaterThan(0);
-    pdfLinks.forEach((link) => {
+    for (let link of pdfLinks) {
       expect(link).toBeVisible();
       expect(link).toHaveAttribute("href");
       expect(link.getAttribute("href")).toMatch(/\.pdf$/i);
-    });
+    };
     const courseraLinks = screen.getAllByRole("link", {
       name: /Coursera Info/i,
     });
     expect(courseraLinks.length).toBeGreaterThan(0);
-    courseraLinks.forEach((link) => {
+    for (let link of courseraLinks) {
       expect(link).toBeVisible();
       expect(link).toHaveAttribute("href");
       expect(link.getAttribute("href")).toMatch(/^https:\/\//);
-    });
+    };
   });
 
   it("renders a course with only a PDF and no Coursera link (edge case for cert.courses.map)", async () => {
