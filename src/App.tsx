@@ -11,7 +11,7 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
-import { FaSun, FaMoon, FaEnvelope } from "react-icons/fa";
+import { FaSun, FaMoon, FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Training from "./pages/Training";
@@ -85,6 +85,30 @@ function App() {
               Training
             </Button>
           </Box>
+          <IconButton
+            component="a"
+            href="https://www.linkedin.com/in/red-parker-14955996/"
+            target="_blank"
+            rel="noopener"
+            sx={{ ml: 2 }}
+            color="inherit"
+            aria-label="visit LinkedIn profile"
+            edge="end"
+          >
+            <FaLinkedin />
+          </IconButton>
+          <IconButton
+            component="a"
+            href="https://github.com/ReddyOrNotHereICode"
+            target="_blank"
+            rel="noopener"
+            sx={{ ml: 2 }}
+            color="inherit"
+            aria-label="visit GitHub profile"
+            edge="end"
+          >
+            <FaGithub />
+          </IconButton>
           <IconButton
             sx={{ ml: 2 }}
             color="inherit"

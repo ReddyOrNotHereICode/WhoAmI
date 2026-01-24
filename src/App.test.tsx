@@ -26,7 +26,6 @@ describe("App Navbar and Navigation", () => {
     setPathname("/");
     render(<App />);
     expect(screen.getByRole("heading", { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByText(/linkedin profile/i)).toBeInTheDocument();
   });
 
   it('renders Projects content when path includes "projects"', () => {
@@ -96,6 +95,19 @@ describe("App Navbar and Navigation", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("renders LinkedIn and GitHub links in navbar", () => {
+    render(<App />);
+    const linkedinLink = screen.getByLabelText(/visit LinkedIn profile/i);
+    const githubLink = screen.getByLabelText(/visit GitHub profile/i);
+    expect(linkedinLink).toBeInTheDocument();
+    expect(githubLink).toBeInTheDocument();
+    expect(linkedinLink).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/in/red-parker-14955996/",
+    );
+    expect(githubLink).toHaveAttribute("href", "https://github.com/RedParker");
+  });
+
   it("theme toggle button is accessible and toggles twice", async () => {
     render(<App />);
     const toggleBtn = screen.getByLabelText(/toggle dark mode/i);
@@ -108,7 +120,9 @@ describe("App Navbar and Navigation", () => {
   it("renders Home after redirect from /WhoAmI", () => {
     setPathname("/WhoAmI");
     render(<App />);
-    expect(screen.getByText(/linkedin profile/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /hi, i'm red parker/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders Home and navigates to Projects and About via Home page buttons", async () => {
