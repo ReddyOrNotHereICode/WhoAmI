@@ -11,7 +11,13 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
-import { FaSun, FaMoon, FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
+import {
+  FaSun,
+  FaMoon,
+  FaEnvelope,
+  FaLinkedin,
+  FaGithub,
+} from "react-icons/fa";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Training from "./pages/Training";

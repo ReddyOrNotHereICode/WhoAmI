@@ -105,7 +105,10 @@ describe("App Navbar and Navigation", () => {
       "href",
       "https://www.linkedin.com/in/red-parker-14955996/",
     );
-    expect(githubLink).toHaveAttribute("href", "https://github.com/RedParker");
+    expect(githubLink).toHaveAttribute(
+      "href",
+      "https://github.com/ReddyOrNotHereICode",
+    );
   });
 
   it("theme toggle button is accessible and toggles twice", async () => {
